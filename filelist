@@ -1,0 +1,10 @@
+
+#add scu design files
+.\\rtl\\cpu_core\\picorv32.v
+.\\rtl\\axi\\axi_lite_interconnect.sv
+.\\rtl\\axi\\axi_memory.sv
+.\\rtl\\ip\\led_control.sv
+.\\rtl\\learn_simple_soc.sv
+
+#add testbench files
+.\\tb\\tb.sv

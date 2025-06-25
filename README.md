@@ -16,8 +16,7 @@ It was created as a self-learning project to understand the basic SoC architectu
   AXI memory model supporting read/write operations over AXI bus.
 
 - `axi4lite_interconnect.sv`  
-  AXI-Lite interconnect module connecting master and multiple slaves (memory, peripherals).
-  https://developer.arm.com/documentation/ihi0022/latest
+  [AXI-Lite](https://developer.arm.com/documentation/ihi0022/latest) interconnect module connecting master and multiple slaves (memory, peripherals).
 
 - `led_controller.sv`  
   Simple LED control peripheral connected via AXI-Lite.

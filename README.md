@@ -2,7 +2,10 @@
 
 ## 1. Overview
 
-This repository contains a simple SoC design based on the PicoRV32 core. The SoC includes AXI memory and an LED controller connected via an AXI-Lite interconnect. It was created as a self-learning project to understand the basic SoC architecture and the AXI bus interface.
+This repository contains a simple SoC design based on the [PicoRV32](https://github.com/cliffordwolf/picorv32) core.  
+The SoC includes AXI memory and an LED controller connected via an AXI-Lite interconnect.  
+It was created as a self-learning project to understand the basic SoC architecture and the AXI bus interface.
+
 
 ## 2. File Structure
 

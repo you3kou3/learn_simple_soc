@@ -17,6 +17,7 @@ It was created as a self-learning project to understand the basic SoC architectu
 
 - `axi4lite_interconnect.sv`  
   AXI-Lite interconnect module connecting master and multiple slaves (memory, peripherals).
+  https://developer.arm.com/documentation/ihi0022/latest
 
 - `led_controller.sv`  
   Simple LED control peripheral connected via AXI-Lite.

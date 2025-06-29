@@ -50,7 +50,7 @@ module axi_memory #(
 
    initial begin
       $display("Loading memory from firmware.hex");
-      $readmemh("firmware.hex", memory);
+      $readmemh("./firmware/firmware.hex", memory);
    end
 
 

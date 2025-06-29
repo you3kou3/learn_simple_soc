@@ -1,11 +1,11 @@
 // ============================================================================
-// File    : axi4lite_interconnect.sv
+// File    : axi_lite_interconnect.sv
 // Author  : Tooru Kino
 // Created : 2025-06-22
 // License : Public Domain
 // ============================================================================
 
-module axi4lite_interconnect #(
+module axi_lite_interconnect #(
    parameter integer NUM_SLAVES = 2,
    parameter integer ADDR_WIDTH = 32,
    parameter [NUM_SLAVES*ADDR_WIDTH-1:0] SLAVE_ADDR_BASES = {32'h1000_0000, 32'h0000_0000}, // MSB first

@@ -41,10 +41,12 @@ module tb;
    wire trap;
 
    // Instantiate the top module (SoC)
-   TOP top_inst (
-      .CLK   (clk),
-      .RSTN  (rstn),
-      .TRAP  (trap)
+   learn_simple_soc
+      learn_simple_soc_inst (
+         .clk     (clk),
+         .resetn  (rstn),
+         .trap    (trap),
+         .leds    ()
    );
 
    // Trap detection

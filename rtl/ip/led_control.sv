@@ -6,7 +6,7 @@
 // ============================================================================
 
 module led_control #(
-   parameter ADDR_WIDTH = 4
+   parameter ADDR_WIDTH = 32
 )(
    input  logic                   clk,
    input  logic                   rstn,

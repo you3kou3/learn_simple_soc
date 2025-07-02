@@ -37,6 +37,7 @@ module learn_simple_soc (
 
    logic        m_axi_rvalid, m_axi_rready;
    logic [31:0] m_axi_rdata;
+   logic [1:0]  m_axi_rresp;
 
    // --------------------------------------------------
    // AXI4-Lite signals from interconnect to slave 0 
@@ -58,13 +59,15 @@ module learn_simple_soc (
 
    logic        s0_axi_rvalid, s0_axi_rready;
    logic [31:0] s0_axi_rdata;
+   logic [1:0]  s0_axi_rresp;
 
    // --------------------------------------------------
    // AXI4-Lite signals from interconnect to slave 1 
    //   (led_control) 
    // --------------------------------------------------
    logic        s1_axi_awvalid, s1_axi_awready;
-   logic [3:0]  s1_axi_awaddr;
+   logic [31:0] s1_axi_awaddr;
+   logic [2:0]  s1_axi_awprot;
 
    logic        s1_axi_wvalid, s1_axi_wready;
    logic [31:0] s1_axi_wdata;
@@ -73,7 +76,8 @@ module learn_simple_soc (
    logic        s1_axi_bvalid, s1_axi_bready;
 
    logic        s1_axi_arvalid, s1_axi_arready;
-   logic [3:0]  s1_axi_araddr;
+   logic [31:0] s1_axi_araddr;
+   logic [2:0]  s1_axi_arprot;
 
    logic        s1_axi_rvalid, s1_axi_rready;
    logic [31:0] s1_axi_rdata;
@@ -82,10 +86,18 @@ module learn_simple_soc (
    // --------------------------------------------------
    // Instantiate picorv32_axi (master)
    // --------------------------------------------------
-   picorv32_axi
-      picorv32_axi_inst (
+   picorv32_axi #(
+		   .ENABLE_REGS_DUALPORT(0),
+		   //.COMPRESSED_ISA(1),
+		   .ENABLE_MUL(1),
+		   .ENABLE_DIV(1),
+		   .ENABLE_IRQ(1),
+		   .ENABLE_TRACE(1),
+         .REGS_INIT_ZERO(1)
+      ) picorv32_axi_inst (
          .clk              (clk),
          .resetn           (resetn),
+         .trap             (),
 
          // AXI master interface ----------------
          .mem_axi_awvalid  (m_axi_awvalid),
@@ -133,7 +145,7 @@ module learn_simple_soc (
    axi_lite_interconnect #(
          .NUM_SLAVES(2),
          .ADDR_WIDTH(32),
-         .SLAVE_ADDR_BASES({32'h1000_0000, 32'h0000_0000}), // Order: slave 1, slave 0 (MSB first)
+         .SLAVE_ADDR_BASES({32'h8000_0000, 32'h0000_0000}), // Order: slave 1, slave 0 (MSB first)
          .SLAVE_ADDR_MASKS({32'hF000_0000, 32'hF000_0000})
       ) interconnect_inst (
          .clk              (clk),
@@ -161,29 +173,31 @@ module learn_simple_soc (
          .m_axi_rvalid     (m_axi_rvalid),
          .m_axi_rready     (m_axi_rready),
          .m_axi_rdata      (m_axi_rdata),
+         .m_axi_rresp      (m_axi_rresp),
 
-         // Slave  interface (s1: led_control, s0:memory) -------------
-         .s_axi_awvalid    ({s1_axi_awvalid, s0_axi_awvalid}),
-         .s_axi_awready    ({s1_axi_awready, s0_axi_awready}),
-         .s_axi_awaddr     ({s1_axi_awaddr, s0_axi_awaddr}),
-         .s_axi_awprot     ({s1_axi_awprot, s0_axi_awprot}),
+         // Slave  interface (s0:memory, s1: led_control) -------------
+         .s_axi_awvalid    ({s0_axi_awvalid, s1_axi_awvalid}),
+         .s_axi_awready    ({s0_axi_awready, s1_axi_awready}),
+         .s_axi_awaddr     ({s0_axi_awaddr,  s1_axi_awaddr}),
+         .s_axi_awprot     ({s0_axi_awprot,  s1_axi_awprot}),
 
-         .s_axi_wvalid     ({s1_axi_wvalid, s0_axi_wvalid}),
-         .s_axi_wready     ({s1_axi_wready, s0_axi_wready}),
-         .s_axi_wdata      ({s1_axi_wdata, s0_axi_wdata}),
-         .s_axi_wstrb      ({s1_axi_wstrb, s0_axi_wstrb}),
+         .s_axi_wvalid     ({s9_axi_wvalid, s1_axi_wvalid}),
+         .s_axi_wready     ({s9_axi_wready, s1_axi_wready}),
+         .s_axi_wdata      ({s9_axi_wdata,  s1_axi_wdata}),
+         .s_axi_wstrb      ({s9_axi_wstrb,  s1_axi_wstrb}),
 
-         .s_axi_bvalid     ({s1_axi_bvalid, s0_axi_bvalid}),
-         .s_axi_bready     ({s1_axi_bready, s0_axi_bready}),
+         .s_axi_bvalid     ({s0_axi_bvalid, s1_axi_bvalid}),
+         .s_axi_bready     ({s0_axi_bready, s1_axi_bready}),
 
-         .s_axi_arvalid    ({s1_axi_arvalid, s0_axi_arvalid}),
-         .s_axi_arready    ({s1_axi_arready, s0_axi_arready}),
-         .s_axi_araddr     ({s1_axi_araddr, s0_axi_araddr}),
-         .s_axi_arprot     ({s1_axi_arprot, s0_axi_arprot}),
+         .s_axi_arvalid    ({s0_axi_arvalid, s1_axi_arvalid}),
+         .s_axi_arready    ({s0_axi_arready, s1_axi_arready}),
+         .s_axi_araddr     ({s0_axi_araddr,  s1_axi_araddr}),
+         .s_axi_arprot     ({s0_axi_arprot,  s1_axi_arprot}),
 
-         .s_axi_rvalid     ({s1_axi_rvalid, s0_axi_rvalid}),
-         .s_axi_rready     ({s1_axi_rready, s0_axi_rready}),
-         .s_axi_rdata      ({s1_axi_rdata, s0_axi_rdata})
+         .s_axi_rvalid     ({s0_axi_rvalid, s1_axi_rvalid}),
+         .s_axi_rready     ({s0_axi_rready, s1_axi_rready}),
+         .s_axi_rdata      ({s0_axi_rdata,  s1_axi_rdata}),
+         .s_axi_rresp      ({s0_axi_rresp,  s1_axi_rresp})
       );
 
    // --------------------------------------------------
@@ -222,7 +236,7 @@ module learn_simple_soc (
    // Instantiate led_control (slave 1)
    // --------------------------------------------------
    led_control #(
-         .ADDR_WIDTH(4)
+         .ADDR_WIDTH(32)
       ) led_ctrl_inst (
          .clk(clk),
          .rstn(resetn),

@@ -2,10 +2,7 @@
 
 ## 1. Overview
 
-This repository contains a simple SoC design based on the [PicoRV32](https://github.com/cliffordwolf/picorv32) core.  
-The SoC includes AXI memory and an LED controller connected via an AXI-Lite interconnect.  
-It was created as a self-learning project to understand the basic SoC architecture and the AXI bus interface.
-
+This repository contains a simple SoC design built around the PicoRV32 core. The SoC includes AXI memory and an LED controller connected through an AXI-Lite interconnect, aimed as a self-learning project for understanding basic SoC construction and AXI bus interfaces. It is intended to provide a practical platform to study RISC-V CPU core integration, peripheral interfacing, and bus communication in a compact and manageable environment.
 
 ## 2. File Structure
 
@@ -16,7 +13,7 @@ It was created as a self-learning project to understand the basic SoC architectu
   AXI memory model supporting read/write operations over AXI bus.
 
 - `axi4lite_interconnect.sv`  
-  [AXI-Lite](https://developer.arm.com/documentation/ihi0022/latest) interconnect module connecting master and multiple slaves (memory, peripherals).
+  AXI-Lite interconnect module connecting master and multiple slaves (memory, peripherals).
 
 - `led_controller.sv`  
   Simple LED control peripheral connected via AXI-Lite.

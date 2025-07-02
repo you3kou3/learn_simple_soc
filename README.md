@@ -46,7 +46,7 @@ Add or customize signals to `Wave.do` as needed for detailed debugging.
 This section describes how to generate a firmware HEX file from a simple C source file using the RISC-V GNU toolchain (`riscv-none-elf-gcc`) and a Python script.  
 **This procedure is intended for Windows environments.**
 
-### 🔧 Requirements
+### Requirements
 
 - **RISC-V GNU Toolchain**  
   Download and install from:  
@@ -55,15 +55,14 @@ This section describes how to generate a firmware HEX file from a simple C sourc
 - **Python 3.x**  
   Required to run the `makehex.py` script.
 
----
 
-### ⚙️ Build Steps
+### Build Steps
 
 Run the following batch file from the command prompt:
 
 ```sh
 build_simple_func.bat
-
+```
 
 This script will:
 
@@ -72,7 +71,8 @@ This script will:
 - Convert the ELF file to a raw binary (`.bin`)
 - Use a Python script to convert the binary into HEX format (`.hex`) for use in simulation
 
-### 📄 Output Files
+### Output Files
+
 
 | File              | Description                                  |
 |-------------------|----------------------------------------------|
@@ -81,4 +81,4 @@ This script will:
 | `simple_func.bin` | Raw binary image                             |
 | `simple_func.hex` | HEX file used by the testbench memory loader |
 
----
+

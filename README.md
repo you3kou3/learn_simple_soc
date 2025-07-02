@@ -41,9 +41,44 @@ This project targets Windows environment using ModelSim for simulation. Use the 
 
 Add or customize signals to `Wave.do` as needed for detailed debugging.
 
-## 4. Firmware HEX File Generation
+## 4. Firmware HEX File Generation (Windows Environment)
 
-**Under Construction** — This section will describe how to build the firmware HEX file from source code using the RISC-V GNU toolchain and conversion scripts.  
-Details and instructions will be added soon.
+This section describes how to generate a firmware HEX file from a simple C source file using the RISC-V GNU toolchain (`riscv-none-elf-gcc`) and a Python script.  
+**This procedure is intended for Windows environments.**
+
+### 🔧 Requirements
+
+- **RISC-V GNU Toolchain**  
+  Download and install from:  
+  [https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases)
+
+- **Python 3.x**  
+  Required to run the `makehex.py` script.
+
+---
+
+### ⚙️ Build Steps
+
+Run the following batch file from the command prompt:
+
+```sh
+build_simple_func.bat
+
+
+This script will:
+
+- Compile `simple_func.c` into an object file
+- Link it using a custom linker script (`sections.lds`) to generate an ELF file
+- Convert the ELF file to a raw binary (`.bin`)
+- Use a Python script to convert the binary into HEX format (`.hex`) for use in simulation
+
+### 📄 Output Files
+
+| File              | Description                                  |
+|-------------------|----------------------------------------------|
+| `simple_func.o`   | Compiled object file                         |
+| `simple_func.elf` | Linked ELF executable                        |
+| `simple_func.bin` | Raw binary image                             |
+| `simple_func.hex` | HEX file used by the testbench memory loader |
 
 ---
